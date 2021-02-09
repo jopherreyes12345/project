@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-main>
+                <v-container>
+                    <!--
+                          the rest of the upper tags from v-app to v-container are required.
+                          A screen layout is divided into rows and cols where each row can have a max of 12 cols.
+
+                          https://vuetifyjs.com/en/components/grids You might have to take some time and practice on it.
+                          There are no x,y coordinates in a browser.
+
+                          The example below has 3 cols that spans 4 cols each = 12.
+                          
+                       -->
+
+                    <v-row>
+                        <v-col cols="4">
+                            <v-text-field label="Customer Number" outlined></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-text-field label="Organization" outlined></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-text-field label="Facility" outlined></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <!-- 
+                     The next row is 8 cols only and that is fine.
+                     the "carrier" array is defined in the script portion. :item is called an attribute that
+                     is binded to the variable carrier.
+                     Icons can also be preprended/appended check https://materialdesignicons.com/cdn/2.0.46/
+                     for other icons
+
+                    -->
+                    <v-row>
+
+                        <v-col cols="4">
+                            <v-select label="Shipping" outlined :items="carrier" prepend-inner-icon="mdi-airplane">
+                            </v-select>
+                        </v-col>
+                        <!--
+                             All html form types can be used here, the <<date> type will create a dropdown. Remember Vuetify is just a CSS framework.
+                         -->
+                        <v-col cols="4">
+                            <v-text-field label="Shipping Date" outlined type="date"></v-text-field>
+                        </v-col>
+                    </v-row>
+
+                    <!-- a line divider is sometimes nice to see between rows or whateven elements-->
+                    <v-divider></v-divider>
+
+
+                    <!-- if you want classic label + textbox style you will have to do extra effort
+                        the contact person label looks ugly here so we need to add font style and add a few space on top
+                        to align it..
+                        refer to https://vuetifyjs.com/en/styles/text-and-typography/#typography 
+                        for more text attributes
+                    -->
+                    <v-row>
+
+                        <v-col cols="1">
+                            <div>Contact Person</div>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-text-field label="Contact Person"></v-text-field>
+                        </v-col>
+
+                    </v-row>
+
+                    <!--
+                        this is better..so aligning elements is all about adding margins / paddings to specific sides of the "boxed" element 
+                        colors (success / warning / error)  https://vuetifyjs.com/en/styles/colors/  are also predefined so it is consistent across the app however you can stil your favorite color "blue"
+                    -->
+                    <v-row>
+                        <v-col cols="1">
+                            <div class="body-1 mt-5 font-weight-regular warning--text">Contact Number</div>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-text-field label="Contact Number"></v-text-field>
+                        </v-col>
+
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="4">
+                            <!-- mr-5 means margin on the right side 5 px so there is a gap between the to buttons since there are in the same column cell-->
+                            <v-btn outlined class="mr-5">Submit</v-btn>
+
+                            <v-btn tile outlined color="success">
+                                <v-icon left>mdi-pencil</v-icon> Edit
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+
+
+                    <!--
+
+    THis will be our standard form. A card is used as a container for the form to make it a bit elegant
+    complete with toolbar
+
+    https://vuetifyjs.com/en/components/cards/
+-->
+
+                    <v-row>
+                        <!--- half of the screen only-->
+                        <v-col cols=6>
+                            <v-card>
+
+                                <v-toolbar color="indigo" dark>
+                                    <v-toolbar-title>User Form</v-toolbar-title>
+                                </v-toolbar>
+
+                                <!-- all elements will be placed inside the v-card-text portion so everything has a nice border and padding around it 
+                                the v-model is the variable that contains the value inputted/selected.. this is javascript integration <<vue js>>
+                                -->
+                                <v-card-text>
+                                    <v-form ref="form" n>
+                                        <v-text-field v-model="name" label="Name"></v-text-field>
+
+                                        <v-text-field v-model="email" label="E-mail">
+                                        </v-text-field>
+
+                                        <v-checkbox v-model="checkbox" label="Do you agree?"></v-checkbox>
+
+                                        <v-btn color="success" class="mr-4" @click="submit">
+                                            Submit
+                                        </v-btn>
+
+                                        <v-btn color="error" class="mr-4" @click="reset">
+                                            Reset Form
+                                        </v-btn>
+
+                                    </v-form>
+
+
+                                </v-card-text>
+                            </v-card>
+
+                        </v-col>
+
+
+                    </v-row>
+
+
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+
+            data: {
+                carrier: [
+                    { value: "fedex", text: "Federal Express" },
+                    { value: "ups", text: "United Parcel Services" },
+
+                ],
+            },
+
+
+            methods: {
+                validate() {
+                    this.$refs.form.validate()
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>
